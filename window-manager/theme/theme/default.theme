@@ -12,8 +12,8 @@ TitleButtonsLeft="sd"
 TitleButtonsRight="xmirh"
 TitleButtonsSupported="sxmihrd"
 
-BorderSizeX=4
-BorderSizeY=4
+BorderSizeX=8
+BorderSizeY=8
 CornerSizeX=20
 CornerSizeY=20
 DlgBorderSizeX=4
