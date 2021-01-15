@@ -1,7 +1,7 @@
 /* XPM */
 static char *frameABR_xpm[] = {
     "5 5 3 1",
-    " 	c None",
+    " 	c #ffffff",
     ".	c #ffffff",
     "+	c #ffffff",
     "...+ ",
