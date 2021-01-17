@@ -1,2 +1,2 @@
 trap break INT
-find | entr ./install-light.sh
+find | entr ./localInstall.sh

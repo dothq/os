@@ -1,4 +1,4 @@
-ThemeDescription="Light"
+ThemeDescription="dotOS Light"
 
 ThemeAuthor="Dot HQ"
 
@@ -51,4 +51,4 @@ ColorScrollBarButtonArrow="rgb:C0/C0/C0"
 DesktopBackgroundCenter=0
 DesktopBackgroundScaled=1
 DesktopBackgroundColor="#FFFFFF"
-DesktopBackgroundImage="1@2x.png"
+DesktopBackgroundImage="backgrounds/1.png"
