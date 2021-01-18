@@ -24,8 +24,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="44.8"
-     inkscape:cx="11.358301"
-     inkscape:cy="21.409149"
+     inkscape:cx="6.9862656"
+     inkscape:cy="18.889095"
      inkscape:document-units="px"
      inkscape:current-layer="layer4"
      inkscape:document-rotation="0"
@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -76,21 +76,23 @@
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="Icon">
-    <rect
-       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-       id="rect3677"
-       width="12"
-       height="8"
-       x="3.9681571"
-       y="5.9626117"
-       ry="2.028024" />
-    <rect
-       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-       id="rect3683"
-       width="12"
-       height="8"
-       x="4"
-       y="27"
-       ry="2.028024" />
+    <g
+       style="fill:none"
+       id="g847"
+       transform="translate(5,5)">
+      <path
+         d="M 3,0.5 H 7 C 8.38071,0.5 9.5,1.61929 9.5,3 V 7 C 9.5,8.38071 8.38071,9.5 7,9.5 H 3 C 1.61929,9.5 0.5,8.38071 0.5,7 V 3 C 0.5,1.61929 1.61929,0.5 3,0.5 Z"
+         stroke="#000000"
+         id="path836" />
+    </g>
+    <g
+       style="fill:none"
+       id="g847-7"
+       transform="translate(5,26)">
+      <path
+         d="M 3,0.5 H 7 C 8.38071,0.5 9.5,1.61929 9.5,3 V 7 C 9.5,8.38071 8.38071,9.5 7,9.5 H 3 C 1.61929,9.5 0.5,8.38071 0.5,7 V 3 C 0.5,1.61929 1.61929,0.5 3,0.5 Z"
+         stroke="#000000"
+         id="path836-5" />
+    </g>
   </g>
 </svg>
