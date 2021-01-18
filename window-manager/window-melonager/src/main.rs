@@ -3,24 +3,19 @@ extern crate penrose;
 
 use penrose::{
     core::{
-        bindings::KeyEventHandler,
-        config::Config,
-        helpers::index_selectors,
-        manager::WindowManager,
-        Selector
+        bindings::KeyEventHandler, config::Config, helpers::index_selectors,
+        manager::WindowManager, Layout, Selector,
     },
     logging_error_handler,
     xcb::new_xcb_backed_window_manager,
-    Backward, Forward, Less, More
+    Backward, Forward, Less, More,
 };
 
 use simplelog::{LevelFilter, SimpleLogger};
 
-
 // Replace these with your preferred terminal and program launcher
 const TERMINAL: &str = "xterm";
 const LAUNCHER: &str = "dmenu_run";
-
 
 fn main() -> penrose::Result<()> {
     // Initialise the logger (use LevelFilter::Debug to enable debug logging)
@@ -28,7 +23,12 @@ fn main() -> penrose::Result<()> {
         panic!("unable to set log level: {}", e);
     };
 
-    let config = Config::default();
+    let mut config_builder = Config::default().builder();
+    let config = config_builder
+        .layouts(vec![Layout::floating("Floating")])
+        .build()
+        .expect("Failed to build config");
+
     let key_bindings = gen_keybindings! {
         // Program launchers
         "M-semicolon" => run_external!(LAUNCHER);
@@ -65,5 +65,5 @@ fn main() -> penrose::Result<()> {
     };
 
     let mut wm = new_xcb_backed_window_manager(config, vec![], logging_error_handler())?;
-    wm.grab_keys_and_run(key_bindings, map!{})
+    wm.grab_keys_and_run(key_bindings, map! {})
 }
