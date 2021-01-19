@@ -1,2 +1,2 @@
 trap break INT
-find | entr ./localRun.sh
+find $(dirname $BASH_SOURCE) | entr $(dirname $BASH_SOURCE)/localRun.sh
