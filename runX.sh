@@ -1,0 +1,1 @@
+DISPLAY=:0 Xephyr -br -ac -screen 1920x1080 -noreset :100

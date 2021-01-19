@@ -1,0 +1,1 @@
+DISPLAY=:100 icewm
