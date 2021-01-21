@@ -8,7 +8,15 @@ edition = "2018"
 
 [dependencies]
 gdk = "0.13"
+chrono = "0.4"
 
 [dependencies.gtk]
 version = "0.9"
 features = ["v3_22"]
+
+[dependencies.gio]
+version = "0.9"
+features = ["v2_44"]
+
+[dependencies.glib]
+version = "0.10"
