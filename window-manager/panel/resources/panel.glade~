@@ -51,10 +51,8 @@
           <object class="GtkGrid" id="calender_container">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="halign">center</property>
-            <property name="valign">center</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
+            <property name="halign">baseline</property>
+            <property name="valign">baseline</property>
             <property name="row-spacing">23</property>
             <property name="column-spacing">23</property>
             <property name="row-homogeneous">True</property>

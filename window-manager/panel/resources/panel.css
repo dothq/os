@@ -9,8 +9,7 @@
 }
 
 .calender-today {
-  background-color: #3ca0ff;
+  background-color: @bg_color;
   padding: 4px;
-  aspect-ratio: 1/1;
   border-radius: 1000px; /* This only needs to be large enough to never be an issue */
 }
