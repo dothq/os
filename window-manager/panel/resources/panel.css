@@ -7,3 +7,10 @@
   font-size: 1.5rem;
   font-weight: bold;
 }
+
+.calender-today {
+  background-color: #3ca0ff;
+  padding: 4px;
+  aspect-ratio: 1/1;
+  border-radius: 1000px; /* This only needs to be large enough to never be an issue */
+}

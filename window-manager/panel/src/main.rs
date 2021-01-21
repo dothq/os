@@ -10,7 +10,9 @@ use calender::{day_of_week, days_in_month};
 use chrono::{Datelike, Local};
 use gdk::WindowTypeHint;
 use gio::prelude::*;
-use gtk::{prelude::*, Application, ApplicationWindow, Builder, Button, Label, StyleContext};
+use gtk::{
+    prelude::*, Application, ApplicationWindow, AspectFrame, Builder, Button, Label, StyleContext,
+};
 
 mod calender;
 
@@ -134,7 +136,19 @@ impl Panel {
 
         for (i, week) in calender.iter().enumerate() {
             for (j, day) in week.iter().enumerate() {
-                grid.attach(&Label::new(Some(&day.0)), j as i32, i as i32, 1, 1);
+                let label = Label::new(Some(&day.0));
+                let aspect_frame = AspectFrame::new(None, 0.5, 0.5, 1.0, false);
+                aspect_frame.add(&label);
+
+                aspect_frame.get_style_context().add_class("flat");
+
+                // If the day is today
+                if day.1 {
+                    // Add class calender-today
+                    label.get_style_context().add_class("calender-today")
+                }
+
+                grid.attach(&aspect_frame, j as i32, i as i32, 1, 1);
             }
         }
     }
