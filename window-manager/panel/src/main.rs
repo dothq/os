@@ -11,7 +11,8 @@ use chrono::{Datelike, Local};
 use gdk::WindowTypeHint;
 use gio::prelude::*;
 use gtk::{
-    prelude::*, Application, ApplicationWindow, AspectFrame, Builder, Button, Label, StyleContext,
+    prelude::*, Application, ApplicationWindow, AspectFrame, Builder, Button, Label, Popover,
+    StyleContext,
 };
 
 mod calender;
@@ -28,7 +29,7 @@ fn resource(name: &str) -> String {
 struct Panel {
     window: ApplicationWindow,
     start_menu: ApplicationWindow,
-    calender: ApplicationWindow,
+    calender: Popover,
     builder: Builder,
 }
 
@@ -48,8 +49,7 @@ impl Panel {
         start_menu.set_application(Some(app));
         start_menu.set_skip_taskbar_hint(true);
 
-        let calender: ApplicationWindow = builder.get_object("calender").unwrap();
-        calender.set_application(Some(app));
+        let calender: Popover = builder.get_object("calender").unwrap();
 
         Panel {
             window,
@@ -81,7 +81,6 @@ impl Panel {
 
         self.window.show_all();
         self.start_menu.show_all();
-        self.calender.show_all();
 
         self.start_menu.set_visible(false);
     }
@@ -151,15 +150,22 @@ impl Panel {
                 grid.attach(&aspect_frame, j as i32, i as i32, 1, 1);
             }
         }
+
+        // Setup calender popup
+        let open_calender: Button = self.builder.get_object("open_calender").unwrap();
+        self.calender.set_relative_to(Some(&open_calender));
     }
 
     fn add_interactions(&self) {
         let open_start_menu: Button = self.builder.get_object("open_start_menu").unwrap();
         let start_menu = self.start_menu.clone();
 
-        open_start_menu.connect_clicked(move |_| {
-            start_menu.set_visible(!start_menu.is_visible());
-        });
+        open_start_menu.connect_clicked(move |_| start_menu.set_visible(!start_menu.is_visible()));
+
+        let open_calender: Button = self.builder.get_object("open_calender").unwrap();
+        let calender = self.calender.clone();
+
+        open_calender.connect_clicked(move |_| calender.popup());
     }
 }
 

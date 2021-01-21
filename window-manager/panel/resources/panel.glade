@@ -3,16 +3,12 @@
 <interface>
   <requires lib="gtk+" version="3.22"/>
   <!-- interface-css-provider-path panel.css -->
-  <object class="GtkApplicationWindow" id="calender">
+  <object class="GtkPopover" id="calender">
     <property name="can-focus">False</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="margin-start">23</property>
-        <property name="margin-end">23</property>
-        <property name="margin-top">23</property>
-        <property name="margin-bottom">23</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkLabel">
@@ -51,7 +47,6 @@
           <object class="GtkGrid" id="calender_container">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="halign">baseline</property>
             <property name="valign">baseline</property>
             <property name="row-spacing">23</property>
             <property name="column-spacing">23</property>
@@ -124,14 +119,16 @@
           <placeholder/>
         </child>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkButton" id="open_calender">
+            <property name="label" translatable="yes">Open calender</property>
             <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes">OS</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="pack-type">end</property>
             <property name="position">2</property>
           </packing>
         </child>
