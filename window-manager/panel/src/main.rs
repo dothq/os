@@ -6,16 +6,15 @@ extern crate gtk;
 
 use std::{env::args, error::Error};
 
-use calender::{day_of_week, days_in_month};
+use calendar::{day_of_week, days_in_month};
 use chrono::{Datelike, Local};
 use gdk::WindowTypeHint;
 use gio::prelude::*;
 use gtk::{
-    prelude::*, Application, ApplicationWindow, AspectFrame, Builder, Button, Label, Popover,
-    StyleContext,
+    prelude::*, Application, ApplicationWindow, AspectFrame, Builder, Button, Label, StyleContext,
 };
 
-mod calender;
+mod calendar;
 
 const RESOURCE_PREFIX: &str = "/co/dothq/os/panel";
 
@@ -29,7 +28,7 @@ fn resource(name: &str) -> String {
 struct Panel {
     window: ApplicationWindow,
     start_menu: ApplicationWindow,
-    calender: Popover,
+    calendar: ApplicationWindow,
     builder: Builder,
 }
 
@@ -48,19 +47,22 @@ impl Panel {
         let start_menu: ApplicationWindow = builder.get_object("start_menu").unwrap();
         start_menu.set_application(Some(app));
         start_menu.set_skip_taskbar_hint(true);
+        start_menu.set_type_hint(WindowTypeHint::Dock);
 
-        let calender: Popover = builder.get_object("calender").unwrap();
+        let calendar: ApplicationWindow = builder.get_object("calendar").unwrap();
+        start_menu.set_application(Some(app));
+        calendar.set_type_hint(WindowTypeHint::Dock);
 
         Panel {
             window,
             builder,
-            calender,
+            calendar,
             start_menu,
         }
     }
 
     fn pin(&self) {
-        self.build_calender();
+        self.build_calendar();
 
         let screen = self.window.get_screen().unwrap();
 
@@ -76,16 +78,27 @@ impl Panel {
 
         let start_menu_size = self.start_menu.get_size();
 
-        self.start_menu
-            .move_(x + PADDING, height - HEIGHT - 48 - start_menu_size.1);
+        self.start_menu.move_(
+            x + PADDING,
+            height - HEIGHT - start_menu_size.1 * 2 - PADDING,
+        );
 
         self.window.show_all();
         self.start_menu.show_all();
+        self.calendar.show_all();
+
+        let calendar_menu_size = self.calendar.get_size();
+
+        self.calendar.move_(
+            width - PADDING - calendar_menu_size.0,
+            height - HEIGHT - calendar_menu_size.1 - PADDING * 5,
+        );
 
         self.start_menu.set_visible(false);
+        self.calendar.set_visible(false);
     }
 
-    fn build_calender(&self) {
+    fn build_calendar(&self) {
         let date = Local::now().date().naive_local();
 
         let month = 1;
@@ -96,10 +109,10 @@ impl Panel {
             .iter()
             .map(|e| (format!("{} ", e), false))
             .collect();
-        let mut calender = vec![headers, vec![]];
+        let mut calendar = vec![headers, vec![]];
 
         for _ in 0..day_of_week(0, month, year) + 1 {
-            calender
+            calendar
                 .last_mut()
                 .unwrap()
                 .push((String::from("  "), false));
@@ -117,23 +130,23 @@ impl Panel {
                 today = true;
             }
 
-            calender.last_mut().unwrap().push((p, today));
+            calendar.last_mut().unwrap().push((p, today));
 
             if day_of_week(d, month, year) == 6 {
-                calender.push(Vec::new());
+                calendar.push(Vec::new());
             }
         }
 
-        if calender.last().unwrap().len() == 0 {
-            calender.pop();
+        if calendar.last().unwrap().len() == 0 {
+            calendar.pop();
         }
 
         let grid = self
             .builder
-            .get_object::<gtk::Grid>("calender_container")
+            .get_object::<gtk::Grid>("calendar_container")
             .unwrap();
 
-        for (i, week) in calender.iter().enumerate() {
+        for (i, week) in calendar.iter().enumerate() {
             for (j, day) in week.iter().enumerate() {
                 let label = Label::new(Some(&day.0));
                 let aspect_frame = AspectFrame::new(None, 0.5, 0.5, 1.0, false);
@@ -143,17 +156,18 @@ impl Panel {
 
                 // If the day is today
                 if day.1 {
-                    // Add class calender-today
-                    label.get_style_context().add_class("calender-today")
+                    // Add class calendar-today
+                    label.get_style_context().add_class("calendar-today")
                 }
 
                 grid.attach(&aspect_frame, j as i32, i as i32, 1, 1);
             }
         }
 
-        // Setup calender popup
-        let open_calender: Button = self.builder.get_object("open_calender").unwrap();
-        self.calender.set_relative_to(Some(&open_calender));
+        // Setup calendar popup
+        // let open_calendar: Button = self.builder.get_object("open_calendar").unwrap();
+        // self.calendar.set_pointing_to(Some(&open_calendar));
+        // self.calendar.set_position(PositionType::Top);
     }
 
     fn add_interactions(&self) {
@@ -162,10 +176,10 @@ impl Panel {
 
         open_start_menu.connect_clicked(move |_| start_menu.set_visible(!start_menu.is_visible()));
 
-        let open_calender: Button = self.builder.get_object("open_calender").unwrap();
-        let calender = self.calender.clone();
+        let open_calendar: Button = self.builder.get_object("open_calendar").unwrap();
+        let calendar = self.calendar.clone();
 
-        open_calender.connect_clicked(move |_| calender.popup());
+        open_calendar.connect_clicked(move |_| calendar.set_visible(!calendar.is_visible()));
     }
 }
 
