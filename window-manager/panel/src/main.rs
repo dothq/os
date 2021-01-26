@@ -15,6 +15,7 @@ use gtk::{
 };
 
 mod calendar;
+mod widget;
 
 const RESOURCE_PREFIX: &str = "/co/dothq/os/panel";
 

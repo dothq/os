@@ -1,5 +1,13 @@
+use gtk::ApplicationWindow;
+
 #[cfg(test)]
 mod tests;
+
+pub struct Calendar {
+    window: ApplicationWindow,
+}
+
+impl Calendar {}
 
 pub fn days_in_month(month: usize, year: usize) -> usize {
     match month {
