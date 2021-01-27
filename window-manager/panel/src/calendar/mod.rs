@@ -9,6 +9,8 @@ mod tests;
 
 pub struct Calendar {
     window: ApplicationWindow,
+    day: Label,
+    date: Label,
 }
 
 impl Calendar {
@@ -18,6 +20,9 @@ impl Calendar {
         let month = date.month() as usize;
         let year = date.year() as usize;
         let day = date.day() as usize;
+
+        self.day.set_text(&date.format("%A").to_string());
+        self.date.set_text(&date.format("%d %B %Y").to_string());
 
         let headers = vec!["S", "M", "T", "W", "T", "F", "S"]
             .iter()
@@ -91,14 +96,18 @@ impl Widget for Calendar {
         window.set_application(Some(app));
         window.set_type_hint(WindowTypeHint::Dock);
 
-        let calender = Calendar { window };
+        let calender = Calendar {
+            window,
+            day: builder.get_object("calendar_day").unwrap(),
+            date: builder.get_object("calendar_date").unwrap(),
+        };
 
         calender.build(&builder);
 
         Ok(calender)
     }
 
-    fn pin(&self, x: i32, width: i32, height: i32) -> Result<(), Box<dyn std::error::Error>> {
+    fn pin(&self, _x: i32, width: i32, height: i32) -> Result<(), Box<dyn std::error::Error>> {
         self.window.show_all();
 
         let calendar_menu_size = self.window.get_size();
