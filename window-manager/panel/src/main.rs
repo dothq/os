@@ -6,21 +6,20 @@ extern crate gtk;
 
 use std::{env::args, error::Error};
 
-use calendar::{day_of_week, days_in_month};
-use chrono::{Datelike, Local};
 use gdk::WindowTypeHint;
 use gio::prelude::*;
-use gtk::{
-    prelude::*, Application, ApplicationWindow, AspectFrame, Builder, Button, Label, StyleContext,
-};
+use gtk::{prelude::*, Application, ApplicationWindow, Builder, Button, StyleContext};
+
+use calendar::Calendar;
+use widget::Widget;
 
 mod calendar;
 mod widget;
 
 const RESOURCE_PREFIX: &str = "/co/dothq/os/panel";
 
-const PADDING: i32 = 8;
-const HEIGHT: i32 = 16;
+pub const PADDING: i32 = 8;
+pub const HEIGHT: i32 = 16;
 
 fn resource(name: &str) -> String {
     format!("{}/{}", RESOURCE_PREFIX, name)
@@ -29,7 +28,7 @@ fn resource(name: &str) -> String {
 struct Panel {
     window: ApplicationWindow,
     start_menu: ApplicationWindow,
-    calendar: ApplicationWindow,
+    calendar: Calendar,
     builder: Builder,
 }
 
@@ -50,9 +49,7 @@ impl Panel {
         start_menu.set_skip_taskbar_hint(true);
         start_menu.set_type_hint(WindowTypeHint::Dock);
 
-        let calendar: ApplicationWindow = builder.get_object("calendar").unwrap();
-        start_menu.set_application(Some(app));
-        calendar.set_type_hint(WindowTypeHint::Dock);
+        let calendar = Calendar::new(&builder, app).unwrap();
 
         Panel {
             window,
@@ -86,90 +83,13 @@ impl Panel {
 
         self.window.show_all();
         self.start_menu.show_all();
-        self.calendar.show_all();
-
-        let calendar_menu_size = self.calendar.get_size();
-
-        self.calendar.move_(
-            width - PADDING - calendar_menu_size.0,
-            height - HEIGHT - calendar_menu_size.1 - PADDING * 5,
-        );
 
         self.start_menu.set_visible(false);
-        self.calendar.set_visible(false);
+
+        self.calendar.pin(x, width, height).unwrap();
     }
 
-    fn build_calendar(&self) {
-        let date = Local::now().date().naive_local();
-
-        let month = 1;
-        let year = 2021;
-        let day = date.day() as usize;
-
-        let headers = vec!["S", "M", "T", "W", "T", "F", "S"]
-            .iter()
-            .map(|e| (format!("{} ", e), false))
-            .collect();
-        let mut calendar = vec![headers, vec![]];
-
-        for _ in 0..day_of_week(0, month, year) + 1 {
-            calendar
-                .last_mut()
-                .unwrap()
-                .push((String::from("  "), false));
-        }
-
-        for d in 1..days_in_month(month, year) {
-            let p = match d {
-                0..=9 => format!("0{}", d),
-                _ => d.to_string(),
-            };
-
-            let mut today = false;
-
-            if d == day {
-                today = true;
-            }
-
-            calendar.last_mut().unwrap().push((p, today));
-
-            if day_of_week(d, month, year) == 6 {
-                calendar.push(Vec::new());
-            }
-        }
-
-        if calendar.last().unwrap().len() == 0 {
-            calendar.pop();
-        }
-
-        let grid = self
-            .builder
-            .get_object::<gtk::Grid>("calendar_container")
-            .unwrap();
-
-        for (i, week) in calendar.iter().enumerate() {
-            for (j, day) in week.iter().enumerate() {
-                let label = Label::new(Some(&day.0));
-                let aspect_frame = AspectFrame::new(None, 0.5, 0.5, 1.0, false);
-                aspect_frame.add(&label);
-
-                aspect_frame.get_style_context().add_class("flat");
-
-                // If the day is today
-                if day.1 {
-                    // Add class calendar-today
-                    label.get_style_context().add_class("calendar-today")
-                }
-
-                grid.attach(&aspect_frame, j as i32, i as i32, 1, 1);
-            }
-        }
-
-        // Setup calendar popup
-        // let open_calendar: Button = self.builder.get_object("open_calendar").unwrap();
-        // self.calendar.set_pointing_to(Some(&open_calendar));
-        // self.calendar.set_position(PositionType::Top);
-    }
+    fn build_calendar(&self) {}
 
     fn add_interactions(&self) {
         let open_start_menu: Button = self.builder.get_object("open_start_menu").unwrap();
@@ -177,17 +97,14 @@ impl Panel {
 
         open_start_menu.connect_clicked(move |_| start_menu.set_visible(!start_menu.is_visible()));
 
-        let open_calendar: Button = self.builder.get_object("open_calendar").unwrap();
-        let calendar = self.calendar.clone();
-
-        open_calendar.connect_clicked(move |_| calendar.set_visible(!calendar.is_visible()));
+        self.calendar.add_interactions(&self.builder).unwrap();
     }
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
     let application = gtk::Application::new(Some("co.dothq.os.panel"), Default::default())?;
 
-    application.connect_activate(|app| {
+    application.connect_activate(move |app| {
         // Load compiled resources
         let resources_bytes = include_bytes!("../resources/resources.gresource");
         let resource_data = glib::Bytes::from(&resources_bytes[..]);
