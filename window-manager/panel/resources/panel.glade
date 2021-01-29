@@ -3,13 +3,104 @@
 <interface>
   <requires lib="gtk+" version="3.22"/>
   <!-- interface-css-provider-path panel.css -->
-  <object class="GtkApplicationWindow" id="calendar">
+  <object class="GtkImage" id="NextArrow">
+    <property name="visible">True</property>
     <property name="can-focus">False</property>
+    <property name="halign">end</property>
+    <property name="xalign">1</property>
+    <property name="icon-name">go-next</property>
+  </object>
+  <object class="GtkApplicationWindow" id="start_menu">
+    <property name="can-focus">False</property>
+    <property name="type-hint">dock</property>
     <property name="skip-taskbar-hint">True</property>
     <property name="decorated">False</property>
     <property name="show-menubar">False</property>
     <child>
       <object class="GtkBox">
+        <property name="width-request">318</property>
+        <property name="height-request">-1</property>
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="margin-start">22</property>
+        <property name="margin-end">22</property>
+        <property name="margin-top">22</property>
+        <property name="margin-bottom">22</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkImage">
+                <property name="width-request">24</property>
+                <property name="height-request">24</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="icon-name">system-users</property>
+                <property name="icon_size">3</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Kieran</property>
+                <attributes>
+                  <attribute name="weight" value="semibold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">All apps</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="image">NextArrow</property>
+            <property name="image-position">right</property>
+            <property name="always-show-image">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkApplicationWindow" id="calendar">
+    <property name="can-focus">False</property>
+    <property name="type-hint">dock</property>
+    <property name="skip-taskbar-hint">True</property>
+    <property name="decorated">False</property>
+    <property name="show-menubar">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="width-request">-1</property>
+        <property name="height-request">-1</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="margin-start">22</property>
@@ -149,21 +240,5 @@
   <object class="GtkTextBuffer" id="textbuffer1">
     <property name="text" translatable="yes">Hello world
 This is an example popup. Hello dotOS</property>
-  </object>
-  <object class="GtkApplicationWindow" id="start_menu">
-    <property name="can-focus">False</property>
-    <property name="type">popup</property>
-    <property name="decorated">False</property>
-    <child>
-      <object class="GtkTextView">
-        <property name="visible">True</property>
-        <property name="can-focus">True</property>
-        <property name="left-margin">4</property>
-        <property name="right-margin">4</property>
-        <property name="top-margin">4</property>
-        <property name="bottom-margin">4</property>
-        <property name="buffer">textbuffer1</property>
-      </object>
-    </child>
   </object>
 </interface>

@@ -11,10 +11,12 @@ use gio::prelude::*;
 use gtk::{prelude::*, Application, ApplicationWindow, Builder, Button, StyleContext};
 
 use calendar::Calendar;
+use start_menu::StartMenu;
 use widget::Widget;
 
 mod apps;
 mod calendar;
+mod start_menu;
 mod widget;
 
 const RESOURCE_PREFIX: &str = "/co/dothq/os/panel";
@@ -28,7 +30,7 @@ fn resource(name: &str) -> String {
 
 struct Panel {
     window: ApplicationWindow,
-    start_menu: ApplicationWindow,
+    start_menu: StartMenu,
     calendar: Calendar,
     builder: Builder,
 }
@@ -45,10 +47,7 @@ impl Panel {
         window.set_type_hint(WindowTypeHint::Dock);
 
         // Start menu window
-        let start_menu: ApplicationWindow = builder.get_object("start_menu").unwrap();
-        start_menu.set_application(Some(app));
-        start_menu.set_skip_taskbar_hint(true);
-        start_menu.set_type_hint(WindowTypeHint::Dock);
+        let start_menu = StartMenu::new(&builder, &app).unwrap();
 
         let calendar = Calendar::new(&builder, app).unwrap();
 
@@ -75,30 +74,19 @@ impl Panel {
         self.window.move_(x + PADDING, height - HEIGHT - 32);
         self.window.resize(width - PADDING * 2, HEIGHT);
 
-        let start_menu_size = self.start_menu.get_size();
-
-        self.start_menu.move_(
-            x + PADDING,
-            height - HEIGHT - start_menu_size.1 * 2 - PADDING,
-        );
-
         self.window.show_all();
-        self.start_menu.show_all();
 
-        self.start_menu.set_visible(false);
-
+        self.start_menu.pin(x, width, height).unwrap();
         self.calendar.pin(x, width, height).unwrap();
     }
 
     fn build_calendar(&self) {}
 
     fn add_interactions(&self) {
-        let open_start_menu: Button = self.builder.get_object("open_start_menu").unwrap();
-        let start_menu = self.start_menu.clone();
+        let builder = &self.builder;
 
-        open_start_menu.connect_clicked(move |_| start_menu.set_visible(!start_menu.is_visible()));
-
-        self.calendar.add_interactions(&self.builder).unwrap();
+        self.start_menu.add_interactions(builder).unwrap();
+        self.calendar.add_interactions(builder).unwrap();
     }
 }
 

@@ -3,5 +3,6 @@
   <gresource prefix="/co/dothq/os/panel">
     <file>panel.glade</file>
     <file>panel.css</file>
+    <file>user.svg</file>
   </gresource>
 </gresources>
