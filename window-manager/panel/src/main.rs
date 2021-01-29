@@ -13,6 +13,7 @@ use gtk::{prelude::*, Application, ApplicationWindow, Builder, Button, StyleCont
 use calendar::Calendar;
 use widget::Widget;
 
+mod apps;
 mod calendar;
 mod widget;
 
