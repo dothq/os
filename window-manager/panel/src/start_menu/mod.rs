@@ -1,10 +1,9 @@
-use std::{thread, time::Duration};
+use std::{process::Command, thread, time::Duration};
 
-use gdk::WindowTypeHint;
 use gtk::{
-    prelude::*, Align, ApplicationWindow, Button, ButtonBuilder, FlowBox, Grid, IconSize, Image,
-    Justification, Label, Orientation, PositionType, WrapMode,
+    prelude::*, ApplicationWindow, Button, IconSize, Image, Justification, Label, Orientation,
 };
+use regex::Regex;
 
 use crate::{widget::Widget, HEIGHT, PADDING};
 
@@ -20,6 +19,7 @@ pub struct StartMenu {
 impl StartMenu {
     pub fn add_apps(builder: &gtk::Builder, apps_hash: SystemApps) {
         println!("Adding apps");
+        let exec_match = Regex::new(r"%(f|F|u|U|d|D|n|N|i|c|k|v|m)").unwrap();
 
         let mut apps = Vec::new();
         for (catagories, app) in apps_hash {
@@ -74,6 +74,15 @@ impl StartMenu {
                 button_box.add(&label);
 
                 grid.add(&button);
+
+                let exec = exec_match.replace_all(&app.2, "").to_string();
+                button.connect_clicked(move |_| {
+                    println!("{}", exec);
+                    let _ = Command::new("sh")
+                        .args(vec!["-c", &exec])
+                        .spawn()
+                        .expect("Bad times launching that app");
+                });
             }
 
             if apps.len() % 2 != 0 {
