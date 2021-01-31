@@ -102,7 +102,6 @@ impl Panel {
         // this thread and then send the data back go another thread. So that is
         // what we are going to do, because it works
         let thread = thread::spawn(move || loop {
-            thread::sleep(Duration::from_millis(200));
             // Do tick stuff here
             low_sender
                 .send(ThreadMessage::AppsUpdate(get_system_apps().unwrap()))

@@ -2,8 +2,8 @@ use std::{thread, time::Duration};
 
 use gdk::WindowTypeHint;
 use gtk::{
-    prelude::*, ApplicationWindow, Button, ButtonBuilder, FlowBox, Grid, IconSize, Image, Label,
-    Orientation, PositionType, WrapMode,
+    prelude::*, Align, ApplicationWindow, Button, ButtonBuilder, FlowBox, Grid, IconSize, Image,
+    Justification, Label, Orientation, PositionType, WrapMode,
 };
 
 use crate::{widget::Widget, HEIGHT, PADDING};
@@ -53,17 +53,19 @@ impl StartMenu {
             clear.set_focus_on_click(false);
             grid.add(&clear);
 
-            for app in apps {
+            for app in &apps {
                 let image = Image::from_icon_name(Some(&app.1), IconSize::Dialog);
                 image.set_pixel_size(64);
 
                 let label = Label::new(Some(&app.0));
                 label.set_line_wrap(true);
                 label.set_max_width_chars(15);
+                label.set_justify(Justification::Center);
 
                 let button = Button::new();
                 button.set_hexpand(false);
                 button.set_property_width_request(80);
+                button.get_style_context().add_class("start_apps_button");
 
                 let button_box = gtk::Box::new(Orientation::Vertical, 0);
 
@@ -71,13 +73,14 @@ impl StartMenu {
                 button_box.add(&image);
                 button_box.add(&label);
 
-                // let button = ButtonBuilder::new()
-                //     .label(&app.0)
-                //     .image(&image)
-                //     .image_position(PositionType::Top)
-                //     .always_show_image(true)
-                //     .build();
                 grid.add(&button);
+            }
+
+            if apps.len() % 2 != 0 {
+                // There are an odd number of apps, we need to make it even
+                let clear = Label::new(None);
+                clear.set_focus_on_click(false);
+                grid.add(&clear);
             }
         }
         grid.show_all();

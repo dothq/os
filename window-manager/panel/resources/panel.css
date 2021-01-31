@@ -15,3 +15,12 @@
   padding: 4px;
   border-radius: 1000px; /* This only needs to be large enough to never be an issue */
 }
+
+.start_apps_button {
+  background-color: @theme_bg_color;
+  box-shadow: none;
+}
+
+.start_apps_button label {
+  text-align: center;
+}
