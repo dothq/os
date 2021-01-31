@@ -76,12 +76,17 @@ impl StartMenu {
                 grid.add(&button);
 
                 let exec = exec_match.replace_all(&app.2, "").to_string();
+                let apps_window: ApplicationWindow = builder.get_object("start_apps").unwrap();
+                let main_window: ApplicationWindow = builder.get_object("start_menu").unwrap();
                 button.connect_clicked(move |_| {
                     println!("{}", exec);
                     let _ = Command::new("sh")
                         .args(vec!["-c", &exec])
                         .spawn()
                         .expect("Bad times launching that app");
+
+                    apps_window.set_visible(false);
+                    main_window.set_visible(false);
                 });
             }
 
