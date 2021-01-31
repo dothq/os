@@ -249,11 +249,11 @@
       <object class="GtkScrolledWindow">
         <property name="visible">True</property>
         <property name="can-focus">True</property>
-        <property name="shadow-type">in</property>
         <child>
           <object class="GtkViewport">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="shadow-type">none</property>
             <child>
               <object class="GtkFlowBox" id="app_catagories">
                 <property name="visible">True</property>

@@ -241,11 +241,9 @@
     <property name="width-request">350</property>
     <property name="height-request">500</property>
     <property name="can-focus">False</property>
-    <property name="resizable">False</property>
     <property name="type-hint">dock</property>
     <property name="skip-taskbar-hint">True</property>
     <property name="decorated">False</property>
-    <property name="deletable">False</property>
     <property name="show-menubar">False</property>
     <child>
       <object class="GtkScrolledWindow">
