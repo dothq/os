@@ -70,7 +70,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="open_apps">
             <property name="label" translatable="yes">All apps</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
@@ -84,6 +84,9 @@
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>
@@ -234,8 +237,34 @@
       </object>
     </child>
   </object>
-  <object class="GtkTextBuffer" id="textbuffer1">
-    <property name="text" translatable="yes">Hello world
-This is an example popup. Hello dotOS</property>
+  <object class="GtkApplicationWindow" id="start_apps">
+    <property name="width-request">350</property>
+    <property name="height-request">500</property>
+    <property name="can-focus">False</property>
+    <property name="resizable">False</property>
+    <property name="type-hint">dock</property>
+    <property name="skip-taskbar-hint">True</property>
+    <property name="decorated">False</property>
+    <property name="deletable">False</property>
+    <property name="show-menubar">False</property>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="shadow-type">in</property>
+        <child>
+          <object class="GtkViewport">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkFlowBox" id="app_catagories">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>
