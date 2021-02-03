@@ -11,6 +11,7 @@ pub use self::helpers::{get_system_apps, SystemApps};
 
 mod helpers;
 
+#[derive(Clone)]
 pub struct StartMenu {
     window: ApplicationWindow,
     apps: ApplicationWindow,
@@ -59,7 +60,7 @@ impl StartMenu {
 
                 let label = Label::new(Some(&app.0));
                 label.set_line_wrap(true);
-                label.set_max_width_chars(15);
+                label.set_max_width_chars(8);
                 label.set_justify(Justification::Center);
 
                 let button = Button::new();

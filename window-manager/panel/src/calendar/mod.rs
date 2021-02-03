@@ -7,6 +7,7 @@ use crate::{widget::Widget, HEIGHT, PADDING};
 #[cfg(test)]
 mod tests;
 
+#[derive(Clone)]
 pub struct Calendar {
     window: ApplicationWindow,
     day: Label,

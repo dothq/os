@@ -19,10 +19,12 @@ use gtk::{prelude::*, Application, ApplicationWindow, Builder, StyleContext};
 
 use calendar::Calendar;
 use start_menu::{get_system_apps, StartMenu, SystemApps};
+use volume::Volume;
 use widget::Widget;
 
 mod calendar;
 mod start_menu;
+mod volume;
 mod widget;
 
 const RESOURCE_PREFIX: &str = "/co/dothq/os/panel";
@@ -40,8 +42,7 @@ enum ThreadMessage {
 
 struct Panel {
     window: ApplicationWindow,
-    start_menu: StartMenu,
-    calendar: Calendar,
+    widgets: Vec<Box<dyn Widget>>,
     builder: Builder,
 }
 
@@ -57,14 +58,17 @@ impl Panel {
         window.set_type_hint(WindowTypeHint::Dock);
 
         // Start menu window
-        let start_menu = StartMenu::new(&builder, &app).unwrap();
+        let start_menu = StartMenu::new(&builder, app).unwrap();
         let calendar = Calendar::new(&builder, app).unwrap();
+        let volume = Volume::new(&builder, app).unwrap();
+
+        let widgets: Vec<Box<dyn Widget>> =
+            vec![Box::new(calendar), Box::new(start_menu), Box::new(volume)];
 
         Panel {
             window,
+            widgets,
             builder,
-            calendar,
-            start_menu,
         }
     }
 
@@ -82,15 +86,17 @@ impl Panel {
         self.window.resize(width - PADDING * 2, HEIGHT);
         self.window.show_all();
 
-        self.start_menu.pin(x, width, height).unwrap();
-        self.calendar.pin(x, width, height).unwrap();
+        self.widgets
+            .iter()
+            .for_each(|widget| widget.pin(x, width, height).unwrap());
     }
 
     fn add_interactions(&self) {
         let builder = &self.builder;
 
-        self.start_menu.add_interactions(builder).unwrap();
-        self.calendar.add_interactions(builder).unwrap();
+        self.widgets
+            .iter()
+            .for_each(|widget| widget.add_interactions(builder).unwrap());
     }
 
     fn tick_start(self) -> JoinHandle<()> {

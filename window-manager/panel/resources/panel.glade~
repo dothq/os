@@ -92,6 +92,7 @@
     </child>
   </object>
   <object class="GtkApplicationWindow" id="calendar">
+    <property name="height-request">282</property>
     <property name="can-focus">False</property>
     <property name="type-hint">dock</property>
     <property name="skip-taskbar-hint">True</property>
@@ -189,10 +190,20 @@
       </object>
     </child>
   </object>
+  <object class="GtkImage" id="calender_icon">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">accept_time_event</property>
+  </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="icon-name">media-record</property>
+  </object>
+  <object class="GtkImage" id="panel_volume_icon">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">volume-level-high-panel</property>
   </object>
   <object class="GtkApplicationWindow" id="panel">
     <property name="can-focus">False</property>
@@ -200,7 +211,7 @@
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="spacing">23</property>
+        <property name="spacing">13</property>
         <child>
           <object class="GtkButton" id="open_start_menu">
             <property name="visible">True</property>
@@ -219,10 +230,11 @@
         </child>
         <child>
           <object class="GtkButton" id="open_calendar">
-            <property name="label" translatable="yes">Open calendar</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
+            <property name="image">calender_icon</property>
+            <property name="always-show-image">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -232,13 +244,24 @@
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkButton" id="open_volume">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="image">panel_volume_icon</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack-type">end</property>
+            <property name="position">3</property>
+          </packing>
         </child>
       </object>
     </child>
   </object>
   <object class="GtkApplicationWindow" id="start_apps">
-    <property name="width-request">350</property>
+    <property name="width-request">365</property>
     <property name="height-request">500</property>
     <property name="can-focus">False</property>
     <property name="type-hint">dock</property>
@@ -249,18 +272,76 @@
       <object class="GtkScrolledWindow">
         <property name="visible">True</property>
         <property name="can-focus">True</property>
-        <property name="shadow-type">in</property>
         <child>
           <object class="GtkViewport">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="shadow-type">none</property>
             <child>
               <object class="GtkFlowBox" id="app_catagories">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-start">22</property>
+                <property name="margin-end">22</property>
+                <property name="margin-top">22</property>
+                <property name="margin-bottom">22</property>
               </object>
             </child>
           </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAdjustment" id="volume_slider_adjustments">
+    <property name="upper">100</property>
+    <property name="value">100</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+  <object class="GtkApplicationWindow" id="volume">
+    <property name="height-request">282</property>
+    <property name="can-focus">False</property>
+    <property name="type-hint">dock</property>
+    <property name="skip-taskbar-hint">True</property>
+    <property name="decorated">False</property>
+    <property name="show-menubar">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="margin-start">22</property>
+        <property name="margin-end">22</property>
+        <property name="margin-top">22</property>
+        <property name="margin-bottom">22</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkImage" id="volume_image">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="icon-name">volume-level-high-panel</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScale" id="volume_slider">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="orientation">vertical</property>
+            <property name="adjustment">volume_slider_adjustments</property>
+            <property name="inverted">True</property>
+            <property name="fill-level">100</property>
+            <property name="round-digits">1</property>
+            <property name="draw-value">False</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
         </child>
       </object>
     </child>
