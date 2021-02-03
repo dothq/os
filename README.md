@@ -1,3 +1,5 @@
+**Important:** development on dotOS has been temporarily suspended to get dot browser off the ground, but we will be back!
+
 <div align="center">
 
 # dotOS
